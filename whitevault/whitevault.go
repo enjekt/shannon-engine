@@ -1,31 +1,27 @@
 package main
 
 import (
-	"net/http"
+	"encoding/json"
+	"github.com/enjekt/panda/commons"
 	"github.com/gorilla/mux"
 	"log"
-	"encoding/json"
-	"github.com/enjekt/commons"
+	"net/http"
 )
-
-
 
 var db WhitevaultDB = NewWhitevaultDB()
 
-func GetPANforTokenEndpoint(w http.ResponseWriter, req *http.Request)  {
+func GetPANforTokenEndpoint(w http.ResponseWriter, req *http.Request) {
 	params := mux.Vars(req)
 	token := commons.InitToken(params["token"])
 	log.Println("Token received lookup: ", token)
-
 
 	panda := db.GetPanda(token)
 	pad := GetPad(token)
 	log.Printf("This is the panda:%s", panda.ID)
 	log.Printf("This is the pad:%s", pad.ID)
-	
-	pan:=commons.InitPan(panda,pad)
-	log.Printf("This is the pan string value: %s \n", pan.ToString())
 
+	pan := commons.InitPan(panda, pad)
+	log.Printf("This is the pan string value: %s \n", pan.ToString())
 
 	json.NewEncoder(w).Encode(*pan)
 }
@@ -35,8 +31,8 @@ func AddPANEndpoint(w http.ResponseWriter, req *http.Request) {
 	pan := commons.NewPan(params["pan"])
 
 	log.Println("Add PAN: " + pan.ToString())
-	pad:=commons.NewPad()
-	panda:=commons.NewPanda(pan,pad)
+	pad := commons.NewPad()
+	panda := commons.NewPanda(pan, pad)
 	token := commons.NewToken(pan)
 	log.Println("Created new pad: ", pad)
 
@@ -48,7 +44,7 @@ func AddPANEndpoint(w http.ResponseWriter, req *http.Request) {
 
 }
 
-func DeleteTokenEndpoint(w http.ResponseWriter, req *http.Request)  {
+func DeleteTokenEndpoint(w http.ResponseWriter, req *http.Request) {
 	params := mux.Vars(req)
 	token := commons.InitToken(params["token"])
 	//TODO Add the delete logic to DB and to BlackVault call.

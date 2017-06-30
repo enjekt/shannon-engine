@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/enjekt/commons"
 	"fmt"
+	"github.com/enjekt/panda/commons"
 )
 
 type BlackvaultDB interface {
@@ -28,8 +28,8 @@ func (bvdb *blackvaultDBContext) UpsertTokenPad(token *commons.Token, panda *com
 
 func (bvdb *blackvaultDBContext) GetPad(token *commons.Token) *commons.Pad {
 	fmt.Printf("Token to retrieve pad for: %s \n", token.ToString())
-	tokenStr:=token.ToString()
-	padStr := bvdb.Get(bvdb.tokenToPandaBucket,tokenStr)
+	tokenStr := token.ToString()
+	padStr := bvdb.Get(bvdb.tokenToPandaBucket, tokenStr)
 	fmt.Printf("Fetched from db the padStr: %s \n", padStr)
 	return commons.InitPad(padStr)
 }

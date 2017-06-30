@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/enjekt/commons"
+	"github.com/enjekt/panda/commons"
 )
 
 type WhitevaultDB interface {

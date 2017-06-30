@@ -16,8 +16,8 @@ var fiveDigitPumpChannel = make(chan string, 100)
 func init() {
 	initRndNumPump()
 	initPadPump()
-	initSixDigitPump();
-	initFourDigitPump();
+	initSixDigitPump()
+	initFourDigitPump()
 }
 
 //Async random number pump prefills random numbers in separate process.
@@ -33,6 +33,7 @@ func initRndNumPump() {
 		}
 	}()
 }
+
 //Async random 16 digit pump pre-generates pads
 func initPadPump() {
 	go func() {
@@ -64,10 +65,10 @@ func CreateRandomSixteenDigitStr() string {
 
 //Used for creating middle of Visa/MC tokens
 func CreateRndSixDigitStr() string {
-	return <- sixDigitPumpChannel
+	return <-sixDigitPumpChannel
 }
 func CreateRndFiveDigitStr() string {
-	return <- fiveDigitPumpChannel
+	return <-fiveDigitPumpChannel
 }
 func CreateRndDigitStr(len int) string {
 	return string(getRndByteArr(len))

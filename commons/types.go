@@ -1,19 +1,19 @@
 package commons
 
 import (
+	"fmt"
+	"log"
 	"strconv"
 	"strings"
-	"log"
-	"fmt"
 )
 
 type PV struct {
 	ID string `json:"Id,omitempty"`
 }
-type Token struct{PV}
-type Panda struct{PV}
-type Pad struct {PV}
-type Pan struct {PV}
+type Token struct{ PV }
+type Panda struct{ PV }
+type Pad struct{ PV }
+type Pan struct{ PV }
 
 type Result struct {
 	Response string `json:"Id"`
@@ -21,8 +21,9 @@ type Result struct {
 
 type TokenPadMessage struct {
 	Token string `json:"Token,omitempty"`
-	Pad string `json:"Pad,omitempty"`
+	Pad   string `json:"Pad,omitempty"`
 }
+
 /*type TokenPadMsg struct {
 	Token string `json:"ID,omitempty"`
 	Pad string `json:"ID,omitempty"`
@@ -47,68 +48,66 @@ func NewToken(pan *Pan) *Token {
 			break
 		}
 
-		tokenStr =bin + tokenRand + last4
+		tokenStr = bin + tokenRand + last4
 	}
-	token:=Token{}
-	token.ID =tokenStr
+	token := Token{}
+	token.ID = tokenStr
 	return &token
 }
 
-
 func NewPanda(pan *Pan, pad *Pad) *Panda {
-	pandaInt:=pan.ToInt64() + pad.ToInt64()
-	panda:=&Panda{}
+	pandaInt := pan.ToInt64() + pad.ToInt64()
+	panda := &Panda{}
 	panda.ID = itoa(pandaInt)
 	return panda
 }
 
-func NewPad() *Pad{
-	p:=&Pad{}
+func NewPad() *Pad {
+	p := &Pad{}
 	p.ID = CreateRandomSixteenDigitStr()
 	return p
 }
-func NewPan(str string) *Pan{
-	p:=&Pan{}
-	p.ID =stripSpaces(str)
+func NewPan(str string) *Pan {
+	p := &Pan{}
+	p.ID = stripSpaces(str)
 	return p
 }
 
 func InitPad(pandaStr string) *Pad {
-	pad:=&Pad{}
+	pad := &Pad{}
 	pad.ID = stripSpaces(pandaStr)
 	return pad
 }
 
-
 func InitPanda(pandaStr string) *Panda {
-	panda:=&Panda{}
+	panda := &Panda{}
 	panda.ID = pandaStr
 	return panda
 }
 
 func InitToken(tokenStr string) *Token {
-	token:=Token{}
-	token.ID =tokenStr
+	token := Token{}
+	token.ID = tokenStr
 	return &token
 }
 func InitPan(panda *Panda, pad *Pad) *Pan {
-	pan:=Pan{}
-	pan.ID =itoa(panda.ToInt64()-pad.ToInt64())
+	pan := Pan{}
+	pan.ID = itoa(panda.ToInt64() - pad.ToInt64())
 	return &pan
 }
 func (self *Pan) GetBin() string {
 	return self.ID[0:6]
 }
-func (self *TokenPadMessage)  ToString() string {
-	return self.Token +"," + self.Pad
+func (self *TokenPadMessage) ToString() string {
+	return self.Token + "," + self.Pad
 }
-func (self *Pan)  GetLastFour() string {
+func (self *Pan) GetLastFour() string {
 	return self.ID[len(self.ID)-4:]
 }
-func (self *Pan)  GetPan() string {
+func (self *Pan) GetPan() string {
 	return self.ID
 }
-func (self *PV)  GetLength() int {
+func (self *PV) GetLength() int {
 	return len(self.ID)
 }
 
@@ -125,6 +124,7 @@ func (self *PV) ToString() string {
 func (self *PV) ToInt64() int64 {
 	return toInt64(self.ID)
 }
+
 //BIN is the bank identifier at beginning of card of 6 digits
 func (self *Pan) getBIN() string {
 	return self.ID[0:6]
@@ -143,7 +143,6 @@ func itoa(num int64) string {
 	str := strconv.FormatInt(num, 10)
 	return str
 }
-
 
 func LuhnCheck(tokenStr string) bool {
 	var sum int64
@@ -164,7 +163,7 @@ func LuhnCheck(tokenStr string) bool {
 		sum += value
 		alt = !alt // Toggle alt-flag
 	}
-	luhnCheck:=(sum % 10) == 0
+	luhnCheck := (sum % 10) == 0
 	fmt.Println("Luhn check: ", luhnCheck)
 	return luhnCheck
 

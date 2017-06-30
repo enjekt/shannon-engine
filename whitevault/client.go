@@ -1,11 +1,11 @@
 package main
 
 import (
-	"github.com/enjekt/commons"
+	"bytes"
+	"github.com/enjekt/panda/commons"
+	"github.com/gorilla/rpc/json"
 	"log"
 	"net/http"
-	"bytes"
-	"github.com/gorilla/rpc/json"
 )
 
 const (
@@ -35,10 +35,9 @@ func GetPad(token *commons.Token) *commons.Pad {
 }
 
 func SendTokenAndPad(token *commons.Token, pad *commons.Pad) {
-	msg:=commons.TokenPadMessage{}
-	msg.Pad=pad.ToString()
-	msg.Token=token.ToString()
-
+	msg := commons.TokenPadMessage{}
+	msg.Pad = pad.ToString()
+	msg.Token = token.ToString()
 
 	message, err := json.EncodeClientRequest(addTokenService, msg)
 	checkEncodingError(message, err)
@@ -50,8 +49,6 @@ func SendTokenAndPad(token *commons.Token, pad *commons.Pad) {
 	checkResponseError(resp, err)
 	defer resp.Body.Close()
 
-
-
 	var result commons.Result
 	err = json.DecodeClientResponse(resp.Body, &result)
 	log.Printf("Result %s\n", result)
@@ -60,18 +57,18 @@ func SendTokenAndPad(token *commons.Token, pad *commons.Pad) {
 	}
 
 }
-func checkRequest(err error)  {
+func checkRequest(err error) {
 	if err != nil {
 		log.Fatalf("%s", err)
 	}
 }
-func checkResponseError(resp *http.Response, err error)  {
+func checkResponseError(resp *http.Response, err error) {
 	log.Printf("Response : %s", resp.StatusCode)
 	if err != nil {
 		log.Fatalf("Error in sending request to %s. %s", url, err)
 	}
 }
-func checkEncodingError(message []byte, err error)  {
+func checkEncodingError(message []byte, err error) {
 	log.Printf("Encoded %s \n", string(message))
 	if err != nil {
 		log.Fatalf("%s", err)

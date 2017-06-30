@@ -1,14 +1,15 @@
 package commons
 
 import (
-	"testing"
-	"log"
 	"fmt"
+	"log"
+	"testing"
 )
+
 func TestRndStr(t *testing.T) {
 	logTest("TestRndStr")
-	for i:=0 ; i<1000 ; i++ {
-		rndStr:= CreateRndDigitStr(10)
+	for i := 0; i < 1000; i++ {
+		rndStr := CreateRndDigitStr(10)
 
 		//log.Printf("String generator line %d created %s of length \n", i, rndStr)
 		if len(rndStr) != 10 {
@@ -18,8 +19,8 @@ func TestRndStr(t *testing.T) {
 }
 func TestGetPad(t *testing.T) {
 	logTest("TestGetPad")
-	for i:=0 ; i<1000 ; i++ {
-		rndPad:= NewPad()
+	for i := 0; i < 1000; i++ {
+		rndPad := NewPad()
 		//log.Printf("String generator line %d created %s of length \n", i, rndStr)
 		//fmt.Println(rndStr)
 		if rndPad.GetLength() != 16 {
@@ -29,8 +30,8 @@ func TestGetPad(t *testing.T) {
 }
 func TestGetRndSixDigitStr(t *testing.T) {
 	logTest("TestGetRndFiveDigitStr")
-	for i:=0 ; i<10000 ; i++ {
-		rndStr:= CreateRndSixDigitStr()
+	for i := 0; i < 10000; i++ {
+		rndStr := CreateRndSixDigitStr()
 		fmt.Println(rndStr)
 		//log.Printf("String generator line %d created %s of length \n", i, rndStr)
 		if len(rndStr) != 6 {
@@ -40,8 +41,8 @@ func TestGetRndSixDigitStr(t *testing.T) {
 }
 func TestGetRndFiveDigitStr(t *testing.T) {
 	logTest("TestGetRndFiveDigitStr")
-	for i:=0 ; i<1000 ; i++ {
-		rndStr:= CreateRndFiveDigitStr()
+	for i := 0; i < 1000; i++ {
+		rndStr := CreateRndFiveDigitStr()
 		//log.Printf("String generator line %d created %s of length \n", i, rndStr)
 		if len(rndStr) != 5 {
 			t.Errorf("Expected len %d string but received %s", 5, rndStr)
@@ -49,7 +50,7 @@ func TestGetRndFiveDigitStr(t *testing.T) {
 	}
 }
 
-func logTest(testStr string){
-	log.Printf("Starting test %s \n",testStr)
+func logTest(testStr string) {
+	log.Printf("Starting test %s \n", testStr)
 
 }

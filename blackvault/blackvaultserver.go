@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/enjekt/commons"
+	"github.com/enjekt/panda/commons"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/rpc"
 	"github.com/gorilla/rpc/json"
@@ -29,19 +29,19 @@ func (self *GetService) GetPad(r *http.Request, token *commons.Token, result *co
 	fmt.Println("Get method being called")
 	fmt.Printf("Received message %s \n", token.ToString())
 
-	pad:= db.GetPad(token)
+	pad := db.GetPad(token)
 	fmt.Printf("Result Pad %s \n", pad.ToString())
 	*result = commons.Pad{}
-	result.ID=pad.ToString()
+	result.ID = pad.ToString()
 	return nil
 }
 
 func startServer() {
 
 	router := mux.NewRouter()
-/*	router.HandleFunc("/datastore/{token}/{pad}", AddPadForTokenEndpoint).Methods("PUT")
-	router.HandleFunc("/pad/{token}", GetPadForTokenEndpoint).Methods("GET")
-	router.HandleFunc("/token/{token}", DeleteTokenEndpoint).Methods("DELETE")*/
+	/*	router.HandleFunc("/datastore/{token}/{pad}", AddPadForTokenEndpoint).Methods("PUT")
+		router.HandleFunc("/pad/{token}", GetPadForTokenEndpoint).Methods("GET")
+		router.HandleFunc("/token/{token}", DeleteTokenEndpoint).Methods("DELETE")*/
 
 	s := rpc.NewServer()
 	s.RegisterCodec(json.NewCodec(), "application/json")
@@ -55,6 +55,7 @@ func startServer() {
 func main() {
 	startServer()
 }
+
 /*
 
 func GetPadForTokenEndpoint(w http.ResponseWriter, req *http.Request) {
