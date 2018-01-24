@@ -10,7 +10,7 @@ import (
 	"net/http"
 )
 
-var db BlackvaultDB = NewBlackvaultDB()
+var db = NewBlackvaultDB()
 
 type AddService int
 type GetService int
@@ -55,34 +55,3 @@ func startServer() {
 func main() {
 	startServer()
 }
-
-/*
-
-func GetPadForTokenEndpoint(w http.ResponseWriter, req *http.Request) {
-	params := mux.Vars(req)
-	tokenParam := params["token"]
-	fmt.Println("Token received lookup: ", tokenParam)
-	//_ = json.NewDecoder(req.Body).Decode(&token)
-	token := commons.InitToken(tokenParam)
-	pad := db.GetPad(token)
-
-	fmt.Println("This is the pad: ", pad)
-	log.Println("This is the pad: ", pad)
-}
-func AddPadForTokenEndpoint(w http.ResponseWriter, req *http.Request) {
-	params := mux.Vars(req)
-	tokenParam := params["token"]
-	padParam := params["pad"]
-	fmt.Println("Token received lookup: ", tokenParam)
-	//_ = json.NewDecoder(req.Body).Decode(&token)
-	token := commons.InitToken(tokenParam)
-	pad := commons.InitPad(padParam)
-
-	db.UpsertTokenPad(token, pad)
-
-}
-func DeleteTokenEndpoint(w http.ResponseWriter, req *http.Request) {
-	//params := mux.Vars(req)
-
-}
-*/

@@ -49,7 +49,7 @@ func TestPadIntoInteger(t *testing.T) {
 }
 func TestPanIntoInteger(t *testing.T) {
 	val := NewPan(visaStripped)
-	checkInt(val.ToInt64(), t)
+	checkIntLength(val.ToInt64(), t)
 }
 func TestPandaIntoByteArr(t *testing.T) {
 	val := NewPanda(NewPan(visaStripped), NewPad())
