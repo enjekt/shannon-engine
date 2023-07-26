@@ -10,7 +10,7 @@ import (
 )
 
 func TestMarshalTypes(t *testing.T) {
-	palette := &Palette{}
+	palette := &palette{}
 	palette.Token = "eenie"
 	palette.PaddedPan = "meenie"
 	palette.Pan = "minnie"

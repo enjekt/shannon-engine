@@ -2,17 +2,26 @@ package shannon_engine
 
 import "encoding/json"
 
-type MarshalTypes string
-type Token MarshalTypes
-type PaddedPan MarshalTypes
-type Pad MarshalTypes
-type Pan MarshalTypes
+type FieldType string
+type Token FieldType
+type PaddedPan FieldType
+type Pad FieldType
+type Pan FieldType
 
-func (types *MarshalTypes) MarshalJSON() ([]byte, error) {
-	return json.Marshal(types)
+func (t *FieldType) MarshalJSON() ([]byte, error) {
+	return json.Marshal(t)
 }
 
-type Palette struct {
+func NewPalette() Palette {
+	return &palette{}
+}
+
+type Palette interface {
+	Loggable
+}
+
+type palette struct {
+	LogData
 	Token
 	PaddedPan
 	Pad
