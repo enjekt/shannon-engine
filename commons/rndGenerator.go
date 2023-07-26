@@ -6,8 +6,8 @@ import (
 	"strconv"
 )
 
-//Buffered channel of random ints coming from a go subroutine closure
-//Note almost all int handling in GoLang is uint64
+// Buffered channel of random ints coming from a go subroutine closure
+// Note almost all int handling in GoLang is uint64
 var rndNumChannel = make(chan uint64, 1600)
 var padPumpChannel = make(chan string, 100)
 var sixDigitPumpChannel = make(chan string, 100)
@@ -20,7 +20,7 @@ func init() {
 	initFourDigitPump()
 }
 
-//Async random number pump prefills random numbers in separate process.
+// Async random number pump prefills random numbers in separate process.
 func initRndNumPump() {
 	go func() {
 		for {
@@ -34,7 +34,7 @@ func initRndNumPump() {
 	}()
 }
 
-//Async random 16 digit pump pre-generates pads
+// Async random 16 digit pump pre-generates pads
 func initPadPump() {
 	go func() {
 		for {
@@ -63,7 +63,7 @@ func CreateRandomSixteenDigitStr() string {
 	return <-padPumpChannel
 }
 
-//Used for creating middle of Visa/MC tokens
+// Used for creating middle of Visa/MC tokens
 func CreateRndSixDigitStr() string {
 	return <-sixDigitPumpChannel
 }
@@ -79,8 +79,7 @@ func fetchRndNum() uint64 {
 }
 
 func getRndByteArr(len int) []byte {
-	//This could be parallelized by go routines but not
-	//probably not needed because the random ints are already buffered up
+
 	var rnd []byte
 	for i := 0; i < len; i++ {
 		rnd = strconv.AppendUint(rnd, fetchRndNum(), 10)
