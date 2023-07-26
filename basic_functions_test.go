@@ -16,7 +16,7 @@ func TestEncipherAndDecipher(t *testing.T) {
 	otp := "987654321087654"
 	for _, pan := range validNumberStr {
 
-		paddedPan := Encipher(pan, otp)
+		paddedPan := Encipher(Pan(pan), Pad(otp))
 		//log.Println(pan, "!=", paddedPan)
 		assert.NotEqual(t, pan, paddedPan)
 		panAgain := Decipher(paddedPan, otp)

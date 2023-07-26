@@ -8,8 +8,8 @@ import (
 func TestPipeline(t *testing.T) {
 	palette := &palette{Pan: "5513746525703556"}
 	pipeline := &pipeline{}
-	pipeline.Add(CompactAndStripPanFunc).Add(CreatePadFunc).Add(CreateTokenFunc).Add(PadPanFunc)
-	pipeline.Execute(palette)
+	pipeline.Add(CompactAndStripPanFunc).Add(CreatePadFunc).Add(PadPanFunc).Add(CreateTokenFunc)
+	palette = pipeline.Execute(palette)
 	logStr := palette.LogsToString()
-	log.Println(logStr)
+	log.Println("Returned log string:\n", logStr)
 }

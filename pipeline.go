@@ -1,23 +1,33 @@
 package shannon_engine
 
+func New() Pipeline {
+	return &pipeline{}
+}
+
 type Pipeline interface {
-	Execute(palette *palette)
 	Add(pf paletteFunc) Pipeline
+	Execute(p *palette) *palette
 }
 
 type pipeline struct {
-	paletteFunctions []paletteFunc
+	head, tail chan *palette
 }
 
-// TODO Initial step to simply chain. Then we'll add the bidirectional
-// channels and remove return type on function call.
-func (p *pipeline) Execute(palette *palette) {
-	for _, pf := range p.paletteFunctions {
-		palette = pf(palette)
-	}
+func (p *pipeline) Execute(pa *palette) *palette {
+	p.head <- pa
+	return <-p.tail
 }
 
 func (p *pipeline) Add(pf paletteFunc) Pipeline {
-	p.paletteFunctions = append(p.paletteFunctions, pf)
+
+	if p.head == nil {
+		p.head = make(chan *palette, 1)
+		p.tail = p.head
+	}
+	outputChannel := make(chan *palette, 1)
+
+	go pf(p.tail, outputChannel)
+	p.tail = outputChannel
+
 	return p
 }

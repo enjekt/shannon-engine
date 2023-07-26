@@ -1,23 +1,39 @@
 package shannon_engine
 
-type paletteFunc = func(p *palette) *palette
+type paletteFunc = func(input, output chan *palette)
 
-var CompactAndStripPanFunc = func(p *palette) *palette {
-	p.Log("Compact and Strip Pan ")
-	return p
+var CompactAndStripPanFunc = func(input, output chan *palette) {
+	for evt := range input {
+		evt.Log("Compact and strip..")
+		evt.Pan = Pan(CompactAndStrip(string(evt.Pan)))
+		output <- evt
+	}
+
 }
 
-var CreatePadFunc = func(p *palette) *palette {
-	p.Log("Create Pad ")
-	return p
+var CreatePadFunc = func(input, output chan *palette) {
+	rndNumberStrChan := CreateNumberPump(16, 100)
+	for evt := range input {
+		evt.Log("Create Pad...")
+		evt.Pad = Pad(CompactAndStrip(string(<-rndNumberStrChan)))
+		output <- evt
+	}
+
 }
 
-var PadPanFunc = func(p *palette) *palette {
-	p.Log("Pad the Pan")
-	return p
+var PadPanFunc = func(input, output chan *palette) {
+	for evt := range input {
+		evt.Log("Pad the Pan...")
+		evt.PaddedPan = PaddedPan(Encipher(evt.Pan, evt.Pad))
+		output <- evt
+	}
+
 }
 
-var CreateTokenFunc = func(p *palette) *palette {
-	p.Log("Create Token")
-	return p
+var CreateTokenFunc = func(input, output chan *palette) {
+	for evt := range input {
+		evt.Log("Create Token...")
+		//TODO
+		output <- evt
+	}
 }

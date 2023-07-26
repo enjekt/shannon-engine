@@ -40,8 +40,8 @@ func initRndNumPump(channelSize int) chan uint64 {
 	return rndNumChannel
 }
 
-var Encipher = func(pan, pad string) string {
-	xor := toUint64(pan) ^ toUint64(pad)
+var Encipher = func(pan Pan, pad Pad) string {
+	xor := toUint64(string(pan)) ^ toUint64(string(pad))
 	return strconv.FormatUint(xor, 10)
 }
 
@@ -61,8 +61,14 @@ func toUint64(bstr string) uint64 {
 	return num
 }
 
+type basicFunction = func(string) string
+
 var CompactAndStrip = func(inputStr string) string {
 	return strings.ReplaceAll(inputStr, " ", "")
+}
+
+var CreatePad = func(pan string) string {
+	return "111111111111"
 }
 
 var Bin6 = func(numberStr string) string {
