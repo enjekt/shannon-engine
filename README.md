@@ -6,11 +6,11 @@ Named in honor of Claude Sahnon who proved that this mechanism is a way to secur
 ## Design
 The library is designed using a number of first class functions along with pipelines and stages that compose them with channels in between the stages. For example, a pipeline might look like this:
 
-** pan -> compact and strip spaces -> generate random pad -> create padded pan by XOR **
+**pan -> compact and strip spaces -> generate random pad -> create padded pan by XOR**
 
 or
 
-** pan ->compact and strip spaces -> parse BIN -> parse last 4 or last 2 -> generate token as BIN + random + last 4 -> verify not-Luhn valid token **
+**pan ->compact and strip spaces -> parse BIN -> parse last 4 or last 2 -> generate token as BIN + random + last 4 -> verify not-Luhn valid token**
 
 Because these pipelines are composable, one could decide to make the token Luhn valid. In that case, the token would be indistinguishable from a real credit card number (probably not desirable but still possible)
 
