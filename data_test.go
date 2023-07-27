@@ -11,12 +11,12 @@ import (
 
 func TestMarshalTypes(t *testing.T) {
 	palette := &palette{}
-	palette.Token = "eenie"
-	palette.PaddedPan = "meenie"
-	palette.Pan = "minnie"
-	palette.Pad = "moe"
+	palette.Token.Set("eenie")
+	palette.PaddedPan.Set("meenie")
+	palette.Pan.Set("minnie")
+	palette.Pad.Set("moe")
 
-	assert.Equal(t, "eenie", palette.Token)
+	assert.Equal(t, "eenie", palette.Token.String())
 
 	// Marshal to json
 	j, err := json.Marshal(palette)
@@ -26,5 +26,5 @@ func TestMarshalTypes(t *testing.T) {
 	jsonStr := string(j)
 	// Print Json
 	fmt.Printf("Json: %s", jsonStr)
-	assert.True(t, strings.Contains(jsonStr, "\"Token\":\"eenie\""))
+	assert.True(t, strings.Contains(jsonStr, "\"token\":\"eenie\""))
 }

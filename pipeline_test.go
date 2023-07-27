@@ -7,7 +7,8 @@ import (
 )
 
 func TestPipeline(t *testing.T) {
-	pan := Pan("5513746525703556")
+	validationPan := NewPan().Set("5513746525703556")
+	pan := NewPan().Set("5513746525703556")
 	data := &palette{Pan: pan}
 	encipherPipeline := &pipeline{}
 	encipherPipeline.Add(CompactAndStripPanFunc).Add(CreatePadFunc).Add(EncipherFunc).Add(TokenFunc(6, 4))
@@ -24,10 +25,10 @@ func TestPipeline(t *testing.T) {
 	decipherPipeline := &pipeline{}
 	decipherPipeline.Add(DecipherFunc)
 
-	data.Pan = ""
-	log.Println(data.PaddedPan, data.Pad)
+	data.Pan.Set("")
+	//log.Println(data.PaddedPan, data.Pad)
 	decipherPipeline.Execute(data)
 
-	assert.Equal(t, pan, data.Pan)
+	assert.Equal(t, validationPan.String(), data.Pan.String())
 
 }

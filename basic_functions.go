@@ -41,12 +41,15 @@ func initRndNumPump(channelSize int) chan uint64 {
 }
 
 var Encipher = func(pan Pan, pad Pad) PaddedPan {
-	return PaddedPan(strconv.FormatUint(toUint64(string(pan))^toUint64(string(pad)), 10))
+	paddedPan := paddedPan{}
+	paddedPan.SetUint64(pan.ToUint64() ^ pad.ToUint64())
+	return &paddedPan
 }
 
 var Decipher = func(paddedPan PaddedPan, pad Pad) Pan {
-	return Pan(strconv.FormatUint(toUint64(string(paddedPan))^toUint64(string(pad)), 10))
-
+	pan := pan{}
+	pan.SetUint64(paddedPan.ToUint64() ^ pad.ToUint64())
+	return &pan
 }
 
 func toUint64(bstr string) uint64 {

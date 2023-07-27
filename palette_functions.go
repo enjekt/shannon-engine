@@ -5,7 +5,7 @@ type PaletteFunc = func(input, output chan *palette)
 var CompactAndStripPanFunc = func(input, output chan *palette) {
 	for evt := range input {
 		evt.Log("Compact and strip..")
-		evt.Pan = Pan(CompactAndStrip(string(evt.Pan)))
+		evt.Pan.Set(CompactAndStrip(evt.Pan.String()))
 		output <- evt
 	}
 
@@ -14,8 +14,8 @@ var CompactAndStripPanFunc = func(input, output chan *palette) {
 var CreatePadFunc = func(input, output chan *palette) {
 	padChan := CreateNumberPump(16, 100)
 	for evt := range input {
-		evt.Log("Create Pad...")
-		evt.Pad = Pad(<-padChan)
+		evt.Log("Create pad...")
+		evt.Pad = NewPad().Set(<-padChan)
 		output <- evt
 	}
 
@@ -23,7 +23,7 @@ var CreatePadFunc = func(input, output chan *palette) {
 
 var EncipherFunc = func(input, output chan *palette) {
 	for evt := range input {
-		evt.Log("Encipher the Pan...")
+		evt.Log("Encipher the pan...")
 		evt.PaddedPan = Encipher(evt.Pan, evt.Pad)
 		output <- evt
 	}
@@ -32,7 +32,7 @@ var EncipherFunc = func(input, output chan *palette) {
 
 var DecipherFunc = func(input, output chan *palette) {
 	for evt := range input {
-		evt.Log("Decipher the Pan...")
+		evt.Log("Decipher the pan...")
 		evt.Pan = Decipher(evt.PaddedPan, evt.Pad)
 		output <- evt
 	}
@@ -43,18 +43,18 @@ func TokenFunc(binLength, lastLength int) PaletteFunc {
 	fillStrChan := CreateNumberPump(6, 100)
 	pf := func(input, output chan *palette) {
 		for evt := range input {
-			evt.Log("Create Token...")
+			evt.Log("Create token...")
 
-			pan := string(evt.Pan)
+			pan := evt.Pan.String()
 			bin := Bin(pan, binLength)
 			last := Last(pan, lastLength)
 			fill := <-fillStrChan
-			evt.Token = Token(bin + fill + last)
+			evt.Token = NewToken().Set(bin + fill + last)
 			//Loop to get an non-PAN version
-			for LuhnCheck(string(evt.Token)) {
+			for LuhnCheck(evt.Token.String()) {
 				evt.Log("Illegal token created. Retry.")
 				fill := <-fillStrChan
-				evt.Token = Token(bin + fill + last)
+				evt.Token = NewToken().Set(bin + fill + last)
 
 			}
 			output <- evt
