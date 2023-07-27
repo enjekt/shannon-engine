@@ -1,4 +1,4 @@
-package shannon_engine
+package pipelines
 
 import (
 	"crypto/rand"

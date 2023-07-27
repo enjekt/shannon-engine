@@ -1,8 +1,8 @@
-package shannon_engine
+package pipelines
 
 import . "shannon-engine/types"
 
-func New() Pipeline {
+func NewPipeline() Pipeline {
 	return &pipeline{}
 }
 

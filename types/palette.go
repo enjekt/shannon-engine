@@ -5,6 +5,9 @@ import "encoding/json"
 func NewPalette() Palette {
 	return &palette{Token: NewToken(""), PaddedPan: NewPaddedPan(""), Pad: NewPad(""), Pan: NewPan("")}
 }
+func NewPanPalette(pan string) Palette {
+	return &palette{Token: NewToken(""), PaddedPan: NewPaddedPan(""), Pad: NewPad(""), Pan: NewPan(pan)}
+}
 
 type Palette interface {
 	GetToken() Token

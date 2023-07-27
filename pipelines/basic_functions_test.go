@@ -1,4 +1,4 @@
-package shannon_engine
+package pipelines
 
 import (
 	"github.com/stretchr/testify/assert"
@@ -8,6 +8,7 @@ import (
 	"testing"
 )
 
+// Need some invalid number tests....The check works but needs to have automatic verification...
 var validNumberStr = []string{"5513746525703556", "4532212776500464", "5532212431868196", "4716143551148112", "4716358667016165", "6011867865209833", "4916179771986533", "5515208833720309", "347850880061734"}
 var binSixes = []string{"551374", "453221", "553221", "471614", "471635", "601186", "491617", "551520", "347850"}
 var lastTwo = []string{"56", "64", "96", "12", "65", "33", "33", "09", "34"}

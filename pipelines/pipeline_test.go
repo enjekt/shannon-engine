@@ -1,4 +1,4 @@
-package shannon_engine
+package pipelines
 
 import (
 	"github.com/stretchr/testify/assert"
