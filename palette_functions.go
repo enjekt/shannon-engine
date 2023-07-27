@@ -1,39 +1,41 @@
 package shannon_engine
 
-type PaletteFunc = func(input, output chan *palette)
+import . "shannon-engine/types"
 
-var CompactAndStripPanFunc = func(input, output chan *palette) {
+type PaletteFunc = func(input, output chan Palette)
+
+var CompactAndStripPanFunc = func(input, output chan Palette) {
 	for evt := range input {
 		evt.Log("Compact and strip..")
-		evt.Pan.Set(CompactAndStrip(evt.Pan.String()))
+		evt.GetPan().Set(CompactAndStrip(evt.GetPan().String()))
 		output <- evt
 	}
 
 }
 
-var CreatePadFunc = func(input, output chan *palette) {
+var CreatePadFunc = func(input, output chan Palette) {
 	padChan := CreateNumberPump(16, 100)
 	for evt := range input {
 		evt.Log("Create pad...")
-		evt.Pad = NewPad().Set(<-padChan)
+		evt.GetPad().Set(<-padChan)
 		output <- evt
 	}
 
 }
 
-var EncipherFunc = func(input, output chan *palette) {
+var EncipherFunc = func(input, output chan Palette) {
 	for evt := range input {
 		evt.Log("Encipher the pan...")
-		evt.PaddedPan = Encipher(evt.Pan, evt.Pad)
+		Encipher(evt)
 		output <- evt
 	}
 
 }
 
-var DecipherFunc = func(input, output chan *palette) {
+var DecipherFunc = func(input, output chan Palette) {
 	for evt := range input {
 		evt.Log("Decipher the pan...")
-		evt.Pan = Decipher(evt.PaddedPan, evt.Pad)
+		Decipher(evt)
 		output <- evt
 	}
 
@@ -41,20 +43,21 @@ var DecipherFunc = func(input, output chan *palette) {
 
 func TokenFunc(binLength, lastLength int) PaletteFunc {
 	fillStrChan := CreateNumberPump(6, 100)
-	pf := func(input, output chan *palette) {
+	pf := func(input, output chan Palette) {
 		for evt := range input {
 			evt.Log("Create token...")
 
-			pan := evt.Pan.String()
+			pan := evt.GetPan().String()
 			bin := Bin(pan, binLength)
 			last := Last(pan, lastLength)
 			fill := <-fillStrChan
-			evt.Token = NewToken().Set(bin + fill + last)
+			evt.GetToken().Set(bin + fill + last)
 			//Loop to get an non-PAN version
-			for LuhnCheck(evt.Token.String()) {
+			//No do/while ...
+			for LuhnCheck(evt.GetToken().String()) {
 				evt.Log("Illegal token created. Retry.")
 				fill := <-fillStrChan
-				evt.Token = NewToken().Set(bin + fill + last)
+				evt.GetToken().Set(bin + fill + last)
 
 			}
 			output <- evt

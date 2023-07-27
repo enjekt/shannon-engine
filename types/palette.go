@@ -1,5 +1,7 @@
 package types
 
+import "encoding/json"
+
 func NewPalette() Palette {
 	return &palette{Token: NewToken(""), PaddedPan: NewPaddedPan(""), Pad: NewPad(""), Pan: NewPan("")}
 }
@@ -9,15 +11,16 @@ type Palette interface {
 	GetPaddedPan() PaddedPan
 	GetPad() Pad
 	GetPan() Pan
+	ToJSON() string
 	Loggable
 }
 
 type palette struct {
-	Token
-	PaddedPan
-	Pad
-	Pan
-	LogData
+	Token     `json:"Token"`
+	PaddedPan `json:"PaddedPan"`
+	Pad       `json:"Pad"`
+	Pan       `json:"Pan"`
+	LogData   `json:"-"`
 }
 
 func (p *palette) GetToken() Token {
@@ -34,4 +37,8 @@ func (p *palette) GetPad() Pad {
 
 func (p *palette) GetPan() Pan {
 	return p.Pan
+}
+func (p *palette) ToJSON() string {
+	val, _ := json.Marshal(*p)
+	return string(val)
 }

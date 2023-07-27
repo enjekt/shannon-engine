@@ -1,7 +1,10 @@
 package types
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/stretchr/testify/assert"
+	"log"
 	"testing"
 )
 
@@ -20,6 +23,24 @@ func TestPalette(t *testing.T) {
 	testVals(t, p.GetPaddedPan())
 	p.GetToken().Set(initialStr)
 	testVals(t, p.GetToken())
+
+}
+func TestPaletteMarshaling(t *testing.T) {
+	p := NewPalette()
+	p.GetPan().Set("1")
+	p.GetPad().Set("2")
+	p.GetPaddedPan().Set("3")
+	p.GetToken().Set("4")
+
+	// Marshal to json
+	j, err := json.Marshal(p)
+	if err != nil {
+		log.Fatal(err)
+	}
+	jsonStr := string(j)
+	// Print Json
+	fmt.Printf("Json: %s", jsonStr)
+
 }
 func TestFieldTypes(t *testing.T) {
 	testVals(t, NewPad(initialStr))
@@ -34,4 +55,5 @@ func testVals(t *testing.T, field Field) {
 	field.SetUint64(newInt)
 	assert.Equal(t, expectedSetStr, field.String())
 	assert.Equal(t, newInt, field.ToUint64())
+
 }

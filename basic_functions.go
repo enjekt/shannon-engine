@@ -3,6 +3,7 @@ package shannon_engine
 import (
 	"crypto/rand"
 	"math/big"
+	. "shannon-engine/types"
 	"strconv"
 	"strings"
 )
@@ -40,27 +41,24 @@ func initRndNumPump(channelSize int) chan uint64 {
 	return rndNumChannel
 }
 
-var Encipher = func(pan Pan, pad Pad) PaddedPan {
-	paddedPan := paddedPan{}
-	paddedPan.SetUint64(pan.ToUint64() ^ pad.ToUint64())
-	return &paddedPan
+var Encipher = func(p Palette) {
+	p.GetPaddedPan().SetUint64(p.GetPan().ToUint64() ^ p.GetPad().ToUint64())
 }
 
-var Decipher = func(paddedPan PaddedPan, pad Pad) Pan {
-	pan := pan{}
-	pan.SetUint64(paddedPan.ToUint64() ^ pad.ToUint64())
-	return &pan
+var Decipher = func(p Palette) {
+	p.GetPan().SetUint64(p.GetPaddedPan().ToUint64() ^ p.GetPad().ToUint64())
 }
 
-func ToUint64(bstr string) uint64 {
-	var num uint64
-	if i, err := strconv.ParseUint(bstr, 10, 64); err != nil {
-		panic(err)
-	} else {
-		num = i
-	}
-	return num
-}
+// Deprecate
+//func ToUint64(bstr string) uint64 {
+//	var num uint64
+//	if i, err := strconv.ParseUint(bstr, 10, 64); err != nil {
+//		panic(err)
+//	} else {
+//		num = i
+//	}
+//	return num
+//}
 
 type BasicFunction = func(string) string
 

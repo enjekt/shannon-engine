@@ -3,13 +3,14 @@ package shannon_engine
 import (
 	"github.com/stretchr/testify/assert"
 	"log"
+	"shannon-engine/types"
 	"testing"
 )
 
 func TestPipeline(t *testing.T) {
-	validationPan := NewPan().Set("5513746525703556")
-	pan := NewPan().Set("5513746525703556")
-	data := &palette{Pan: pan}
+	validationPan := "5513746525703556"
+	data := types.NewPalette()
+	data.GetPan().Set("5513746525703556")
 	encipherPipeline := &pipeline{}
 	encipherPipeline.Add(CompactAndStripPanFunc).Add(CreatePadFunc).Add(EncipherFunc).Add(TokenFunc(6, 4))
 
@@ -18,17 +19,17 @@ func TestPipeline(t *testing.T) {
 	logStr := data.LogsToString()
 	log.Println("Returned log string:\n", logStr)
 
-	assert.NotEqual(t, data.Pan, data.PaddedPan)
-	assert.NotEqual(t, data.Pan, data.Pad)
-	assert.NotEqual(t, data.Pad, data.PaddedPan)
+	assert.NotEqual(t, data.GetPan().String(), data.GetPaddedPan().String())
+	assert.NotEqual(t, data.GetPan().String(), data.GetPad().String())
+	assert.NotEqual(t, data.GetPad().String(), data.GetPaddedPan().String())
 
 	decipherPipeline := &pipeline{}
 	decipherPipeline.Add(DecipherFunc)
 
-	data.Pan.Set("")
+	data.GetPan().Set("")
 	//log.Println(data.PaddedPan, data.Pad)
 	decipherPipeline.Execute(data)
 
-	assert.Equal(t, validationPan.String(), data.Pan.String())
+	assert.Equal(t, validationPan, data.GetPan().String())
 
 }

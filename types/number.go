@@ -66,7 +66,7 @@ func NewToken(val string) Pad {
 }
 
 func (t *fieldType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(*t)
+	return json.Marshal(t.String())
 }
 
 func (t *fieldType) Set(val string) {
