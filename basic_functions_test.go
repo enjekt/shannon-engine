@@ -13,10 +13,10 @@ var lastTwo = []string{"56", "64", "96", "12", "65", "33", "33", "09", "34"}
 var validNumbers = []int64{5513746525703556, 4532212776500464, 5532212431868196, 4716143551148112, 4716358667016165, 6011867865209833, 4916179771986533, 5515208833720309, 347850880061734}
 
 func TestEncipherAndDecipher(t *testing.T) {
-	otp := "987654321087654"
-	for _, pan := range validNumberStr {
-
-		paddedPan := Encipher(Pan(pan), Pad(otp))
+	otp := Pad("987654321087654")
+	for _, numStr := range validNumberStr {
+		pan := Pan(numStr)
+		paddedPan := Encipher(pan, otp)
 		//log.Println(pan, "!=", paddedPan)
 		assert.NotEqual(t, pan, paddedPan)
 		panAgain := Decipher(paddedPan, otp)
@@ -57,7 +57,7 @@ func TestLuhnCheck(t *testing.T) {
 
 func TestLastTwo(t *testing.T) {
 	for loc, number := range validNumberStr {
-		val := LastTwo(number)
+		val := Last(number, 2)
 		assert.Equal(t, val, lastTwo[loc])
 
 	}
@@ -66,7 +66,7 @@ func TestLastTwo(t *testing.T) {
 
 func TestBin6(t *testing.T) {
 	for loc, number := range validNumberStr {
-		bin := Bin6(number)
+		bin := Bin(number, 6)
 		assert.Equal(t, bin, binSixes[loc])
 	}
 }

@@ -2,18 +2,23 @@ package shannon_engine
 
 import "encoding/json"
 
-type FieldType string
-type Token FieldType
-type PaddedPan FieldType
-type Pad FieldType
-type Pan FieldType
+// TODO better type mechanism for use with methods.
+type NumericString string
+type Token NumericString
+type PaddedPan NumericString
+type Pad NumericString
+type Pan NumericString
 
-func (t *FieldType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+func (t NumericString) String() string {
+	return string(t)
 }
 
-func NewPalette() Palette {
-	return &palette{}
+func (t NumericString) ToUint64() uint64 {
+	return toUint64(string(t))
+}
+
+func (t NumericString) MarshalJSON() ([]byte, error) {
+	return json.Marshal(t)
 }
 
 type Palette interface {

@@ -16,6 +16,8 @@ func TestMarshalTypes(t *testing.T) {
 	palette.Pan = "minnie"
 	palette.Pad = "moe"
 
+	assert.Equal(t, "eenie", palette.Token)
+
 	// Marshal to json
 	j, err := json.Marshal(palette)
 	if err != nil {

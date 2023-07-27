@@ -40,14 +40,12 @@ func initRndNumPump(channelSize int) chan uint64 {
 	return rndNumChannel
 }
 
-var Encipher = func(pan Pan, pad Pad) string {
-	xor := toUint64(string(pan)) ^ toUint64(string(pad))
-	return strconv.FormatUint(xor, 10)
+var Encipher = func(pan Pan, pad Pad) PaddedPan {
+	return PaddedPan(strconv.FormatUint(toUint64(string(pan))^toUint64(string(pad)), 10))
 }
 
-var Decipher = func(paddedPan, pad string) string {
-	xor := toUint64(paddedPan) ^ toUint64(pad)
-	return strconv.FormatUint(xor, 10)
+var Decipher = func(paddedPan PaddedPan, pad Pad) Pan {
+	return Pan(strconv.FormatUint(toUint64(string(paddedPan))^toUint64(string(pad)), 10))
 
 }
 
@@ -61,34 +59,18 @@ func toUint64(bstr string) uint64 {
 	return num
 }
 
-type basicFunction = func(string) string
+type BasicFunction = func(string) string
 
 var CompactAndStrip = func(inputStr string) string {
 	return strings.ReplaceAll(inputStr, " ", "")
 }
 
-var CreatePad = func(pan string) string {
-	return "111111111111"
+func Bin(numberStr string, length int) string {
+	return numberStr[0:length]
 }
 
-var Bin6 = func(numberStr string) string {
-	return bankId(numberStr, 6)
-}
-
-var Bin8 = func(numberStr string) string {
-	return bankId(numberStr, 8)
-}
-
-var Bin2 = func(numberStr string) string {
-	return bankId(numberStr, 6)
-}
-
-func bankId(numberStr string, idx int) string {
-	return numberStr[0:idx]
-}
-
-var LastTwo = func(numberStr string) string {
-	return numberStr[len(numberStr)-2:]
+var Last = func(numberStr string, length int) string {
+	return numberStr[len(numberStr)-length:]
 }
 
 var LuhnCheck = func(toCheck string) bool {
@@ -102,11 +84,6 @@ var LuhnCheck = func(toCheck string) bool {
 
 var LuhnCheckInt64 = func(toCheck int64) bool {
 	return (toCheck%10+checkLuhnSum(toCheck/10))%10 == 0
-}
-
-var LastTwoInt64 = func(number int64) int64 {
-	lastFour, _ := strToint64(LastTwo(int64ToStr(number)))
-	return lastFour
 }
 
 // Helpers

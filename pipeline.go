@@ -5,7 +5,7 @@ func New() Pipeline {
 }
 
 type Pipeline interface {
-	Add(pf paletteFunc) Pipeline
+	Add(pf PaletteFunc) Pipeline
 	Execute(p *palette) *palette
 }
 
@@ -18,7 +18,7 @@ func (p *pipeline) Execute(pa *palette) *palette {
 	return <-p.tail
 }
 
-func (p *pipeline) Add(pf paletteFunc) Pipeline {
+func (p *pipeline) Add(pf PaletteFunc) Pipeline {
 
 	if p.head == nil {
 		p.head = make(chan *palette, 1)
