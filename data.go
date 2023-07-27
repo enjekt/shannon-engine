@@ -70,7 +70,7 @@ func (t *numberStr) String() string {
 }
 
 func (t *numberStr) ToUint64() uint64 {
-	return toUint64(t.val)
+	return ToUint64(t.val)
 }
 
 func (t *numberStr) MarshalJSON() ([]byte, error) {

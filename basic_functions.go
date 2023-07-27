@@ -52,7 +52,7 @@ var Decipher = func(paddedPan PaddedPan, pad Pad) Pan {
 	return &pan
 }
 
-func toUint64(bstr string) uint64 {
+func ToUint64(bstr string) uint64 {
 	var num uint64
 	if i, err := strconv.ParseUint(bstr, 10, 64); err != nil {
 		panic(err)
