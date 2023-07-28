@@ -22,6 +22,11 @@ Claude Shannon proved, using information theory, that the one-time pad has a pro
 
 https://en.wikipedia.org/wiki/One-time_pad
 
+The current implementation uses the crypto secure implementation provided by the Go language, it is important to note that there are a few other mechanisms that contribute to the overall entropy of the encipherment system.
+
+1. Mulitple channels of different lengths create different sized integers in different locations from the same secure PRNG. While this is primarly in place to ensure high performance and the ability to handle peaky loads, it also means that the random number pumps are constructing random numbers of differing lengths and putting them in channels. That's all asynchronous and the sie of the various channels is configurable.
+2. After tokens are generated, they are Luhn checked. If the token is found to be Luhn valid, indicating a valid credit card PAN, the token is thrown away and regenerated.This should occur about 1 in 10 attempts. Even if villain knew the security algorithm, the seed, and the expected randomm number stream, the incoming PANs, used to generate the tokens, act as a source of entropy in this case. And those are unknowable. 
+ 
 ## Fast!
 
 Encryption is often problematic due to the computational load it puts on a system (in addition to being vulnerable to attack). In the case of encipherment via OTP,  the actual computation is very simple both to encipher and decipher. Basically it looks like this:
