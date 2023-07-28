@@ -24,12 +24,13 @@ https://en.wikipedia.org/wiki/One-time_pad
 
 While the current implementation uses the crypto secure implementation provided by the Go language, it is important to note that there are a few other mechanisms that contribute to the overall entropy of the encipherment system.
 
-1. Mulitple channels of different lengths create different sized integers in different locations from the same secure PRNG. While this is primarly in place to ensure high performance and the ability to handle peaky loads, it also means that the random number pumps are constructing random numbers of differing lengths and putting them in channels. That's all asynchronous and the sie of the various channels is configurable.
-2. After tokens are generated, they are Luhn checked. If the token is found to be Luhn valid, indicating a valid credit card PAN, the token is thrown away and regenerated.This should occur about 1 in 10 attempts. Even if villain knew the security algorithm, the seed, and the expected randomm number stream, the incoming PANs, used to generate the tokens, act as a source of entropy in this case. And those are unknowable. 
+1. Mulitple channels of different lengths create different sized integers in different locations from the same secure PRNG. While this is primarly in place to ensure high performance and the ability to handle peaky loads, it also means that the random number pumps are constructing random numbers of differing lengths and putting them in channels. That's all asynchronous and the size of the various channels is configurable.
+2. Random number pumps, which pre-construct random numbers, execute in their own Go coroutines. This means they are inherently asynchronous and introduce some entropy. As an example, the token generator defaults to creating a channel with 100 six digit random numbers and the pad generator creates 100 sixteen digit numbers. Once full, the pumps block on the channel until a number is consumed. Since these run in different coroutines, it is impossible to know which digits from the random number source end up in which channel. 
+3. After tokens are generated, they are Luhn checked. If the token is found to be Luhn valid, indicating a valid credit card PAN, the token is thrown away and regenerated to ensure that the token is never confused with a real PAN. This should occur about 10% of the time. Even if villain knew the security algorithm, the seed, and the expected randomm number stream from a given channel, the incoming PAN is used to generate the token and it acts as a source of entropy in this case by randomly throwing away digits. The determinant, in this case, is the value of the PAN itself. 
  
 ## Fast!
 
-Encryption is often problematic due to the computational load it puts on a system (in addition to being vulnerable to attack). In the case of encipherment via OTP,  the actual computation is very simple both to encipher and decipher. Basically it looks like this:
+Encryption is often problematic due to the computational load it puts on a system (in addition to being vulnerable to attack). In the case of encipherment via OTP, the actual computation is very simple both to encipher and decipher. Basically it looks like this:
 
 Pan (credit card number) ^ pad (random number) = padded pan
 
