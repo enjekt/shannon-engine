@@ -1,11 +1,11 @@
 package pools
 
 import (
+	. "github.com/enjekt/shannon-engine/models"
+	. "github.com/enjekt/shannon-engine/pipelines"
 	"log"
 	"testing"
 )
-import . "shannon-engine/pipelines"
-import . "shannon-engine/types"
 
 var testNumbers = []string{"5513 7465 2570 3556", "4532212776500464", "55 3221 2431868 196", "4716143551148112", "4716358667016165", "6011867865209833", "4916179771986533", "5515208833720309", "347850880061734"}
 

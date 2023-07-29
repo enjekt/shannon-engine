@@ -2,8 +2,8 @@ package pipelines
 
 import (
 	"crypto/rand"
+	. "github.com/enjekt/shannon-engine/models"
 	"math/big"
-	. "shannon-engine/types"
 	"strconv"
 	"strings"
 )
