@@ -1,15 +1,15 @@
 package pipelines
 
 import (
+	. "github.com/enjekt/shannon-engine/models"
 	"github.com/stretchr/testify/assert"
 	"log"
-	"shannon-engine/types"
 	"testing"
 )
 
 func TestPipeline(t *testing.T) {
 	validationPan := "5513746525703556"
-	data := types.NewPalette()
+	data := NewPalette()
 	data.GetPan().Set("5513746525703556")
 	encipherPipeline := &pipeline{}
 	encipherPipeline.Add(CompactAndStripPanFunc).Add(CreatePadFunc).Add(EncipherFunc).Add(TokenFunc(6, 4))

@@ -1,6 +1,6 @@
 package pipelines
 
-import . "shannon-engine/types"
+import . "github.com/enjekt/shannon-engine/models"
 
 func NewPipeline() Pipeline {
 	return &pipeline{}

@@ -1,9 +1,9 @@
 package pipelines
 
 import (
+	. "github.com/enjekt/shannon-engine/models"
 	"github.com/stretchr/testify/assert"
 	"log"
-	. "shannon-engine/types"
 	"strings"
 	"testing"
 )

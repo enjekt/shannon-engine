@@ -1,8 +1,6 @@
 package pools
 
-import (
-	. "shannon-engine/pipelines"
-)
+import . "github.com/enjekt/shannon-engine/pipelines"
 
 func NewPool(numberOfPipelines int) PipeLinePool {
 	return &pipeLinePool{pool: make(chan Pipeline, numberOfPipelines)}

@@ -1,4 +1,4 @@
-module shannon-engine
+module github.com/enjekt/shannon-engine
 
 go 1.20
 
