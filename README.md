@@ -32,7 +32,7 @@ In plain English, do an exclusive OR of the credit card number with a random num
 
 ## What's the catch?
 
-One must use three different databases to store the values necessary to reconstruct the pan. This is also part of the security mechanics. Gain access to two of the three databases and it provides little value. One database might store the token and expiration date. The second database might store the padded pan keyed by token. The third would store the OTP keyed by the token. 
+One must use two different databases to store the values necessary to reconstruct the pan. This is also part of the security mechanics. Gain access to two of the three databases and it provides little value. One database might store the token and expiration date. The second database might store the padded pan keyed by token. The third would store the OTP keyed by the token. 
 
 To use the values for a credit card transaction, the token, expiration date, pad and padded pan would be reassembled and the credit card number(pan) would be restored for use. 
 
